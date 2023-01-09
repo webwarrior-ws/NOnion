@@ -65,7 +65,7 @@ module FSharpUtil =
                 return failwith "unreachable"
         }
 
-    let Retry<'E1, 'E2 when 'E1 :> Exception and 'E2 :> Exception>
+    let Retry<'TEx when 'TEx :> Exception>
         (jobToRetry: Async<unit>)
         (maxRetryCount: int)
         =
@@ -74,8 +74,7 @@ module FSharpUtil =
                 try
                     do! jobToRetry
                 with
-                | :? 'E1
-                | :? 'E2 as ex ->
+                | :? 'TEx as ex ->
                     if tryNumber < maxRetryCount then
                         return! retryLoop(tryNumber + 1)
                     else

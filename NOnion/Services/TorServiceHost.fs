@@ -249,7 +249,7 @@ type TorServiceHost
                     introEncPubKey
 
             do!
-                FSharpUtil.Retry<SocketException, NOnionException>
+                FSharpUtil.Retry<NOnionException>
                     connectToRendezvousJob
                     maxRendezvousConnectRetryCount
 
