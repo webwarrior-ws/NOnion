@@ -15,6 +15,7 @@ open Org.BouncyCastle.Crypto.Parameters
 open Org.BouncyCastle.Crypto.Generators
 open Org.BouncyCastle.Crypto.Signers
 open Org.BouncyCastle.Security
+open Fsdk
 
 open NOnion
 open NOnion.Cells.Relay

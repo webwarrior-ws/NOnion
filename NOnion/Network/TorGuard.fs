@@ -11,6 +11,7 @@ open System.Threading
 
 open Org.BouncyCastle.Security
 open Org.BouncyCastle.X509
+open Fsdk
 
 open NOnion
 open NOnion.Cells

@@ -91,6 +91,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Fsdk" Version="0.6.0--date20230116-0113.git-2ef0522" />
     <PackageReference Include="Fsharpx.Collections" Version="3.0.1" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
