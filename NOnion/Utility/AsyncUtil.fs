@@ -1,14 +1,12 @@
 ﻿namespace NOnion.Utility
 
 open System
-open System.Runtime.ExceptionServices
 
-open FSharpx.Collections
 open Fsdk
 
 open NOnion
 
-module FSharpUtil =
+module AsyncUtil =
     let WithTimeout (timeSpan: TimeSpan) (job: Async<'R>) : Async<'R> =
         async {
             let! result = FSharpUtil.WithTimeout timeSpan job

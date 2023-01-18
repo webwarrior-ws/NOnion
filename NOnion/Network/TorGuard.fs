@@ -131,7 +131,7 @@ type TorGuard
                     do!
                         client.ConnectAsync(ipEndpoint.Address, ipEndpoint.Port)
                         |> Async.AwaitTask
-                        |> FSharpUtil.WithTimeout
+                        |> AsyncUtil.WithTimeout
                             Constants.GuardConnectionTimeout
                 }
 
@@ -159,7 +159,7 @@ type TorGuard
                     false
                 )
                 |> Async.AwaitTask
-                |> FSharpUtil.WithTimeout Constants.CircuitOperationTimeout
+                |> AsyncUtil.WithTimeout Constants.CircuitOperationTimeout
 
             do!
                 ExceptionUtil.RunGuardJobWithExceptionHandling<unit>(
@@ -534,7 +534,7 @@ type TorGuard
             TorLogger.Log "TorGuard: finished handshake process"
         //TODO: do security checks on handshake data
         }
-        |> FSharpUtil.WithTimeout Constants.CircuitOperationTimeout
+        |> AsyncUtil.WithTimeout Constants.CircuitOperationTimeout
 
     member internal __.RegisterCircuit(circuit: ITorCircuit) : uint16 =
         let rec createCircuitId(retry: int) =

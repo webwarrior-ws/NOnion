@@ -13,7 +13,7 @@ open NOnion.Crypto
 open NOnion.Network
 open NOnion.Http
 open NOnion.Utility
-open NOnion.Utility.FSharpUtil
+open NOnion.Utility.AsyncUtil
 
 type RouterType =
     | Normal
