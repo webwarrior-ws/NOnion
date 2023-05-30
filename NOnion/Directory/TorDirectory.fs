@@ -48,7 +48,8 @@ type TorDirectory =
 
     static member private GetTrustedAuthorities() =
         let authDirText =
-            EmbeddedResourceUtility
+            Fsdk
+                .Misc
                 .ExtractEmbeddedResourceFileContents("auth_dirs.inc")
                 .Replace("\r\n", "\n")
 
