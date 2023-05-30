@@ -20,7 +20,6 @@
     <Compile Include="Exceptions.fs" />
     <Compile Include="HandshakeType.fs" />
     <Compile Include="Utility\AsyncUtil.fs" />
-    <Compile Include="Utility\EmbeddedResourceUtility.fs" />
     <Compile Include="Utility\PemUtility.fs" />
     <Compile Include="Utility\ResultUtil.fs" />
     <Compile Include="Utility\MailboxUtil.fs" />
@@ -91,7 +90,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Fsdk" Version="0.6.0--date20230116-0113.git-2ef0522" />
+    <PackageReference Include="Fsdk" Version="0.6.0--date20230530-1155.git-3bb8d08" />
     <PackageReference Include="Fsharpx.Collections" Version="3.0.1" />
     <PackageReference Include="Portable.BouncyCastle" Version="1.8.10" />
     <PackageReference Include="System.Memory" Version="4.5.4" />
