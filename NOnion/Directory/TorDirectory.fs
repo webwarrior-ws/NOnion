@@ -101,7 +101,7 @@ type TorDirectory =
                 )
 
             use keyRetrievalStream = new TorStream(circuit)
-            do! keyRetrievalStream.ConnectToDirectory() |> Async.Ignore
+            do! keyRetrievalStream.AsyncConnectToDirectory() |> Async.Ignore
 
             let httpClient =
                 TorHttpClient(keyRetrievalStream, Constants.DefaultHttpHost)
@@ -213,7 +213,7 @@ type TorDirectory =
                         circuit.Create CircuitNodeDetail.FastCreate
                         |> Async.Ignore
 
-                    do! stream.ConnectToDirectory() |> Async.Ignore
+                    do! stream.AsyncConnectToDirectory() |> Async.Ignore
 
                     let httpClient =
                         TorHttpClient(stream, directoryRouter.IP.Value)
@@ -354,7 +354,7 @@ type TorDirectory =
                  *)
                 do! circuit.Create CircuitNodeDetail.FastCreate |> Async.Ignore
 
-                do! stream.ConnectToDirectory() |> Async.Ignore
+                do! stream.AsyncConnectToDirectory() |> Async.Ignore
 
                 let httpClient = TorHttpClient(stream, directoryRouter.IP.Value)
 
@@ -385,7 +385,10 @@ type TorDirectory =
                             |> Async.Ignore
 
                         use consensusStream = new TorStream(circuit)
-                        do! consensusStream.ConnectToDirectory() |> Async.Ignore
+
+                        do!
+                            consensusStream.AsyncConnectToDirectory()
+                            |> Async.Ignore
 
                         let consensusHttpClient =
                             TorHttpClient(
@@ -480,7 +483,7 @@ type TorDirectory =
                                 use descriptorsStream = new TorStream(circuit)
 
                                 do!
-                                    descriptorsStream.ConnectToDirectory()
+                                    descriptorsStream.AsyncConnectToDirectory()
                                     |> Async.Ignore
 
                                 let descriptorsHttpClient =

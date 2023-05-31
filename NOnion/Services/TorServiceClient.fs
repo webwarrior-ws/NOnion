@@ -98,7 +98,7 @@ type TorServiceClient =
                                         use dirStream = new TorStream(circuit)
 
                                         do!
-                                            dirStream.ConnectToDirectory()
+                                            dirStream.AsyncConnectToDirectory()
                                             |> Async.Ignore
 
                                         let! documentInString =
@@ -503,7 +503,7 @@ type TorServiceClient =
                 // We can't use the "use" keyword since this stream needs
                 // to outlive this function.
                 let serviceStream = new TorStream(rendezvousCircuit)
-                do! serviceStream.ConnectToService port |> Async.Ignore
+                do! serviceStream.AsyncConnectToService port |> Async.Ignore
 
                 return
                     {
