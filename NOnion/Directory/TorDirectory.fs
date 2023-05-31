@@ -276,7 +276,7 @@ type TorDirectory =
                     endpoint,
                     CircuitNodeDetail.Create(
                         endpoint,
-                        nTorOnionKeyBytes,
+                        NTorOnionKey nTorOnionKeyBytes,
                         fingerprintBytes
                     )
         }

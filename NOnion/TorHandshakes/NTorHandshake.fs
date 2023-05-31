@@ -22,7 +22,7 @@ type NTorHandshake =
 
     static member Create
         (identityDigest: array<byte>)
-        (nTorOnionKey: array<byte>)
+        (NTorOnionKey nTorOnionKey)
         =
 
         let privateKey, publicKey =

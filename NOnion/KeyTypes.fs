@@ -9,3 +9,10 @@ type ExpandedBlindedPublicKey =
     member self.ToByteArray() =
         match self with
         | ExpandedBlindedPublicKey bytes -> bytes
+
+type NTorOnionKey =
+    | NTorOnionKey of array<byte>
+
+    member self.ToByteArray() =
+        match self with
+        | NTorOnionKey bytes -> bytes

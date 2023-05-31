@@ -8,7 +8,7 @@ open NOnion.Utility
 
 type IntroductionPointEntry =
     {
-        OnionKey: Option<array<byte>>
+        OnionKey: Option<NTorOnionKey>
         AuthKey: Option<Certificate>
         EncKey: Option<array<byte>>
         EncKeyCert: Option<Certificate>
@@ -60,7 +60,10 @@ type IntroductionPointEntry =
                     innerParse
                         { state with
                             OnionKey =
-                                readWord() |> Convert.FromBase64String |> Some
+                                readWord()
+                                |> Convert.FromBase64String
+                                |> NTorOnionKey
+                                |> Some
                         }
                 | "enc-key" ->
                     lines.Dequeue() |> ignore<string>
@@ -127,7 +130,7 @@ type IntroductionPointEntry =
                 "HS document (most inner wrapper) is incomplete, missing linkspecifier"
 
         match self.OnionKey with
-        | Some onionKey ->
+        | Some(NTorOnionKey onionKey) ->
             appendLine(
                 sprintf "onion-key ntor %s" (Convert.ToBase64String onionKey)
             )

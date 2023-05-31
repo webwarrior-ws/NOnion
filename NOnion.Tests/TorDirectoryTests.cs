@@ -57,7 +57,7 @@ namespace NOnion.Tests
             var (endPoint, router) = await directory.GetRouterAsync(RouterType.Normal);
             Assert.IsTrue(router.IsCreate);
             Assert.IsFalse(((CircuitNodeDetail.Create)router).IdentityKey.All(x => x == 0));
-            Assert.IsFalse(((CircuitNodeDetail.Create)router).NTorOnionKey.All(x => x == 0));
+            Assert.IsFalse(((CircuitNodeDetail.Create)router).NTorOnionKey.ToByteArray().All(x => x == 0));
             Assert.IsNotNull(((CircuitNodeDetail.Create)router).EndPoint);
             Assert.That(endPoint, Is.EqualTo(((CircuitNodeDetail.Create)router).EndPoint));
         }

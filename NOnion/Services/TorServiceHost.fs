@@ -29,8 +29,8 @@ type IntroductionPointInfo =
         Address: IPEndPoint
         EncryptionKey: AsymmetricCipherKeyPair
         AuthKey: AsymmetricCipherKeyPair
-        MasterPublicKey: array<byte>
-        OnionKey: array<byte>
+        MasterPublicKey: Ed25519PublicKeyParameters
+        OnionKey: NTorOnionKey
         Fingerprint: array<byte>
     }
 
@@ -195,7 +195,7 @@ type TorServiceHost
                     (introductionPointDetails.EncryptionKey.Public
                     :?> X25519PublicKeyParameters)
                     periodInfo
-                    introductionPointDetails.MasterPublicKey
+                    (introductionPointDetails.MasterPublicKey.GetEncoded())
 
             use decryptedStream = new MemoryStream(decryptedData)
             use decryptedReader = new BinaryReader(decryptedStream)
@@ -307,8 +307,7 @@ type TorServiceHost
                                     EncryptionKey = encKeyPair
                                     OnionKey = onionKey
                                     Fingerprint = fingerprint
-                                    MasterPublicKey =
-                                        masterPublicKey.GetEncoded()
+                                    MasterPublicKey = masterPublicKey
                                 }
 
                             do! circuit.Create guardNodeDetail |> Async.Ignore

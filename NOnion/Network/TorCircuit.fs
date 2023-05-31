@@ -25,7 +25,7 @@ type CircuitNodeDetail =
     | FastCreate
     | Create of
         EndPoint: IPEndPoint *
-        NTorOnionKey: array<byte> *
+        NTorOnionKey: NTorOnionKey *
         IdentityKey: array<byte>
 
     member self.GetIdentityKey() =
