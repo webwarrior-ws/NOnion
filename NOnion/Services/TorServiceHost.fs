@@ -126,7 +126,7 @@ type TorServiceHost
             =
             async {
                 let! endPoint, randomNodeDetails =
-                    directory.GetRouter RouterType.Guard
+                    directory.AsyncGetRouter RouterType.Guard
 
                 let! guard =
                     TorGuard.AsyncNewClientWithIdentity
@@ -183,7 +183,7 @@ type TorServiceHost
                 introductionPointDetails.EncryptionKey.Private
                 :?> X25519PrivateKeyParameters
 
-            let! networkStatus = directory.GetLiveNetworkStatus()
+            let! networkStatus = directory.AsyncGetLiveNetworkStatus()
             let periodInfo = networkStatus.GetTimePeriod()
 
             let decryptedData, macKey =
@@ -267,10 +267,10 @@ type TorServiceHost
                 async {
                     try
                         let! guardEndPoint, guardNodeDetail =
-                            directory.GetRouter RouterType.Guard
+                            directory.AsyncGetRouter RouterType.Guard
 
                         let! _, introNodeDetail =
-                            directory.GetRouter RouterType.Normal
+                            directory.AsyncGetRouter RouterType.Normal
 
                         match introNodeDetail with
                         | FastCreate ->
@@ -383,14 +383,14 @@ type TorServiceHost
             else
                 try
                     let! hsDirectoryNode =
-                        directory.GetCircuitNodeDetailByIdentity
+                        directory.AsyncGetCircuitNodeDetailByIdentity
                             directoryToUploadTo
 
                     let! guardEndPoint, randomGuardNode =
-                        directory.GetRouter RouterType.Guard
+                        directory.AsyncGetRouter RouterType.Guard
 
                     let! _, randomMiddleNode =
-                        directory.GetRouter RouterType.Normal
+                        directory.AsyncGetRouter RouterType.Normal
 
                     use! guardNode =
                         TorGuard.AsyncNewClientWithIdentity
@@ -410,7 +410,7 @@ type TorServiceHost
                             dirStream,
                             Constants.DefaultHttpHost
                         )
-                            .PostString
+                            .AsyncPostString
                             (sprintf
                                 "/tor/hs/%i/publish"
                                 Constants.HiddenServices.Version)
@@ -457,7 +457,7 @@ type TorServiceHost
                     (masterPublicKey.GetEncoded())
 
             let! responsibleDirs =
-                directory.GetResponsibleHiddenServiceDirectories
+                directory.AsyncGetResponsibleHiddenServiceDirectories
                     blindedPublicKey
                     srv
                     periodNum
@@ -763,7 +763,7 @@ type TorServiceHost
     //TODO: this should refresh every 60-120min
     member self.KeepDescriptorsUpToDate() =
         async {
-            let! networkStatus = directory.GetLiveNetworkStatus()
+            let! networkStatus = directory.AsyncGetLiveNetworkStatus()
 
             let firstDescriptorBuildJob =
                 self.UpdateFirstDescriptor networkStatus

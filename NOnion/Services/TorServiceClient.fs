@@ -38,7 +38,7 @@ type TorServiceClient =
 
             let getIntroductionPointInfo() =
                 async {
-                    let! networkStatus = directory.GetLiveNetworkStatus()
+                    let! networkStatus = directory.AsyncGetLiveNetworkStatus()
 
                     let periodNum, periodLength = networkStatus.GetTimePeriod()
                     let srv = networkStatus.GetCurrentSRVForClient()
@@ -49,7 +49,7 @@ type TorServiceClient =
                             publicKey
 
                     let! responsibleDirs =
-                        directory.GetResponsibleHiddenServiceDirectories
+                        directory.AsyncGetResponsibleHiddenServiceDirectories
                             blindedPublicKey
                             srv
                             periodNum
@@ -65,13 +65,15 @@ type TorServiceClient =
                             | hsDirectory :: tail ->
                                 try
                                     let! guardEndPoint, randomGuardNode =
-                                        directory.GetRouter RouterType.Guard
+                                        directory.AsyncGetRouter
+                                            RouterType.Guard
 
                                     let! _, randomMiddleNode =
-                                        directory.GetRouter RouterType.Normal
+                                        directory.AsyncGetRouter
+                                            RouterType.Normal
 
                                     let! hsDirectoryNode =
-                                        directory.GetCircuitNodeDetailByIdentity
+                                        directory.AsyncGetCircuitNodeDetailByIdentity
                                             hsDirectory
 
                                     use! guardNode =
@@ -106,7 +108,7 @@ type TorServiceClient =
                                                 dirStream,
                                                 Constants.DefaultHttpHost
                                             )
-                                                .GetAsString
+                                                .AsyncGetAsString
                                                 (sprintf
                                                     "/tor/hs/%i/%s"
                                                     Constants.HiddenServices.Version
@@ -394,8 +396,8 @@ type TorServiceClient =
                 .Create()
                 .GetNonZeroBytes randomGeneratedCookie
 
-            let! endpoint, guardnode = directory.GetRouter RouterType.Guard
-            let! _, rendezvousNode = directory.GetRouter RouterType.Normal
+            let! endpoint, guardnode = directory.AsyncGetRouter RouterType.Guard
+            let! _, rendezvousNode = directory.AsyncGetRouter RouterType.Normal
 
             let! rendezvousGuard =
                 TorGuard.AsyncNewClientWithIdentity
@@ -438,7 +440,7 @@ type TorServiceClient =
                             ]
                     }
 
-                let! networkStatus = directory.GetLiveNetworkStatus()
+                let! networkStatus = directory.AsyncGetLiveNetworkStatus()
                 let periodInfo = networkStatus.GetTimePeriod()
 
                 let data, macKey =
