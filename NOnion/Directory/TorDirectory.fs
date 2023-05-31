@@ -193,7 +193,7 @@ type TorDirectory =
                     let directoryRouter = self.GetRandomDirectorySource()
 
                     use! guard =
-                        TorGuard.NewClient(
+                        TorGuard.AsyncNewClient(
                             IPEndPoint(
                                 IPAddress.Parse(directoryRouter.IP.Value),
                                 directoryRouter.OnionRouterPort.Value
@@ -210,7 +210,7 @@ type TorDirectory =
                         * until 1 week after key update).
                         *)
                     do!
-                        circuit.Create CircuitNodeDetail.FastCreate
+                        circuit.AsyncCreate CircuitNodeDetail.FastCreate
                         |> Async.Ignore
 
                     do! stream.AsyncConnectToDirectory() |> Async.Ignore
@@ -336,7 +336,7 @@ type TorDirectory =
                 let directoryRouter = self.GetRandomDirectorySource()
 
                 use! guard =
-                    TorGuard.NewClient(
+                    TorGuard.AsyncNewClient(
                         IPEndPoint(
                             IPAddress.Parse(directoryRouter.IP.Value),
                             directoryRouter.OnionRouterPort.Value
@@ -352,7 +352,9 @@ type TorDirectory =
                  * are no more than one week old (according to spec, routers must accept outdated keys
                  * until 1 week after key update).
                  *)
-                do! circuit.Create CircuitNodeDetail.FastCreate |> Async.Ignore
+                do!
+                    circuit.AsyncCreate CircuitNodeDetail.FastCreate
+                    |> Async.Ignore
 
                 do! stream.AsyncConnectToDirectory() |> Async.Ignore
 
@@ -381,7 +383,7 @@ type TorDirectory =
                         let circuit = TorCircuit guard
 
                         do!
-                            circuit.Create CircuitNodeDetail.FastCreate
+                            circuit.AsyncCreate CircuitNodeDetail.FastCreate
                             |> Async.Ignore
 
                         use consensusStream = new TorStream(circuit)
@@ -473,7 +475,7 @@ type TorDirectory =
                         let circuit = TorCircuit guard
 
                         do!
-                            circuit.Create CircuitNodeDetail.FastCreate
+                            circuit.AsyncCreate CircuitNodeDetail.FastCreate
                             |> Async.Ignore
 
                         let downloadDescriptorsForChunk
@@ -549,7 +551,7 @@ type TorDirectory =
         (cacheDirectory: DirectoryInfo)
         =
         async {
-            use! guard = TorGuard.NewClient nodeEndPoint
+            use! guard = TorGuard.AsyncNewClient nodeEndPoint
             return! TorDirectory.BootstrapWithGuard guard cacheDirectory
         }
 

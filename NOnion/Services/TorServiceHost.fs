@@ -129,17 +129,19 @@ type TorServiceHost
                     directory.GetRouter RouterType.Guard
 
                 let! guard =
-                    TorGuard.NewClientWithIdentity
+                    TorGuard.AsyncNewClientWithIdentity
                         endPoint
                         (randomNodeDetails.GetIdentityKey() |> Some)
 
                 let rendezvousCircuit =
                     TorCircuit(guard, self.IncomingServiceStreamCallback)
 
-                do! rendezvousCircuit.Create randomNodeDetails |> Async.Ignore
+                do!
+                    rendezvousCircuit.AsyncCreate randomNodeDetails
+                    |> Async.Ignore
 
                 do!
-                    rendezvousCircuit.Extend(
+                    rendezvousCircuit.AsyncExtend(
                         CircuitNodeDetail.Create(
                             rendezvousEndpoint,
                             onionKey,
@@ -149,7 +151,7 @@ type TorServiceHost
                     |> Async.Ignore
 
                 do!
-                    rendezvousCircuit.Rendezvous
+                    rendezvousCircuit.AsyncRendezvous
                         cookie
                         (X25519PublicKeyParameters(clientPubKey, 0))
                         introAuthPubKey
@@ -277,7 +279,7 @@ type TorServiceHost
                                     "Unreachable, directory always returns non-fast connection info"
                         | Create(address, onionKey, fingerprint) ->
                             let! guard =
-                                TorGuard.NewClientWithIdentity
+                                TorGuard.AsyncNewClientWithIdentity
                                     guardEndPoint
                                     (guardNodeDetail.GetIdentityKey() |> Some)
 
@@ -311,11 +313,16 @@ type TorServiceHost
                                         masterPublicKey.GetEncoded()
                                 }
 
-                            do! circuit.Create guardNodeDetail |> Async.Ignore
-                            do! circuit.Extend introNodeDetail |> Async.Ignore
+                            do!
+                                circuit.AsyncCreate guardNodeDetail
+                                |> Async.Ignore
 
                             do!
-                                circuit.RegisterAsIntroductionPoint
+                                circuit.AsyncExtend introNodeDetail
+                                |> Async.Ignore
+
+                            do!
+                                circuit.AsyncRegisterAsIntroductionPoint
                                     (Some authKeyPair)
                                     self.RelayIntroduceCallback
                                     self.IntroductionPointDeathCallback
@@ -386,14 +393,14 @@ type TorServiceHost
                         directory.GetRouter RouterType.Normal
 
                     use! guardNode =
-                        TorGuard.NewClientWithIdentity
+                        TorGuard.AsyncNewClientWithIdentity
                             guardEndPoint
                             (randomGuardNode.GetIdentityKey() |> Some)
 
                     let circuit = TorCircuit guardNode
-                    do! circuit.Create randomGuardNode |> Async.Ignore
-                    do! circuit.Extend randomMiddleNode |> Async.Ignore
-                    do! circuit.Extend hsDirectoryNode |> Async.Ignore
+                    do! circuit.AsyncCreate randomGuardNode |> Async.Ignore
+                    do! circuit.AsyncExtend randomMiddleNode |> Async.Ignore
+                    do! circuit.AsyncExtend hsDirectoryNode |> Async.Ignore
 
                     use dirStream = new TorStream(circuit)
                     do! dirStream.AsyncConnectToDirectory() |> Async.Ignore

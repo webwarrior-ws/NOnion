@@ -75,7 +75,7 @@ type TorServiceClient =
                                             hsDirectory
 
                                     use! guardNode =
-                                        TorGuard.NewClientWithIdentity
+                                        TorGuard.AsyncNewClientWithIdentity
                                             guardEndPoint
                                             (randomGuardNode.GetIdentityKey()
                                              |> Some)
@@ -83,16 +83,16 @@ type TorServiceClient =
                                     let circuit = TorCircuit guardNode
 
                                     do!
-                                        circuit.Create randomGuardNode
+                                        circuit.AsyncCreate randomGuardNode
                                         |> Async.Ignore
 
                                     do!
-                                        circuit.Extend randomMiddleNode
+                                        circuit.AsyncExtend randomMiddleNode
                                         |> Async.Ignore
 
                                     try
                                         do!
-                                            circuit.Extend hsDirectoryNode
+                                            circuit.AsyncExtend hsDirectoryNode
                                             |> Async.Ignore
 
                                         use dirStream = new TorStream(circuit)
@@ -398,17 +398,17 @@ type TorServiceClient =
             let! _, rendezvousNode = directory.GetRouter RouterType.Normal
 
             let! rendezvousGuard =
-                TorGuard.NewClientWithIdentity
+                TorGuard.AsyncNewClientWithIdentity
                     endpoint
                     (guardnode.GetIdentityKey() |> Some)
 
             let rendezvousCircuit = TorCircuit rendezvousGuard
 
-            do! rendezvousCircuit.Create guardnode |> Async.Ignore
-            do! rendezvousCircuit.Extend rendezvousNode |> Async.Ignore
+            do! rendezvousCircuit.AsyncCreate guardnode |> Async.Ignore
+            do! rendezvousCircuit.AsyncExtend rendezvousNode |> Async.Ignore
 
             do!
-                rendezvousCircuit.RegisterAsRendezvousPoint
+                rendezvousCircuit.AsyncRegisterAsRendezvousPoint
                     randomGeneratedCookie
 
             let randomPrivateKey, randomPublicKey =
@@ -473,14 +473,14 @@ type TorServiceClient =
 
                 let introCircuit = TorCircuit rendezvousGuard
 
-                do! introCircuit.Create guardnode |> Async.Ignore
+                do! introCircuit.AsyncCreate guardnode |> Async.Ignore
 
                 do!
-                    introCircuit.Extend introductionPointNodeDetail
+                    introCircuit.AsyncExtend introductionPointNodeDetail
                     |> Async.Ignore
 
                 let rendezvousJoin =
-                    rendezvousCircuit.WaitingForRendezvousJoin
+                    rendezvousCircuit.AsyncWaitingForRendezvousJoin
                         randomPrivateKey
                         randomPublicKey
                         introductionPointAuthKey
@@ -488,7 +488,7 @@ type TorServiceClient =
 
                 let introduceJob =
                     async {
-                        let! ack = introCircuit.Introduce introduce1Packet
+                        let! ack = introCircuit.AsyncIntroduce introduce1Packet
 
                         if ack.Status <> RelayIntroduceStatus.Success then
                             return

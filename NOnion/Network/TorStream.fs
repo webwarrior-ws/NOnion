@@ -71,7 +71,7 @@ type TorStream(circuit: TorCircuit) =
                 match streamState with
                 | Connected streamId ->
                     do!
-                        circuit.SendRelayCell
+                        circuit.AsyncSendRelayCell
                             streamId
                             (RelayEnd EndReason.Done)
                             None
@@ -99,11 +99,11 @@ type TorStream(circuit: TorCircuit) =
                             match Seq.tryHeadTail dataChunks with
                             | None -> ()
                             | Some(head, nextDataChunks) ->
-                                let! lastNode = circuit.GetLastNode()
+                                let! lastNode = circuit.AsyncGetLastNode()
                                 lastNode.Window.PackageDecrease()
 
                                 do!
-                                    circuit.SendRelayCell
+                                    circuit.AsyncSendRelayCell
                                         streamId
                                         (head
                                          |> Seq.toArray
@@ -138,7 +138,7 @@ type TorStream(circuit: TorCircuit) =
                 |> TorLogger.Log
 
                 do!
-                    circuit.SendRelayCell
+                    circuit.AsyncSendRelayCell
                         streamId
                         (RelayBegin
                             {
@@ -165,7 +165,7 @@ type TorStream(circuit: TorCircuit) =
                 |> TorLogger.Log
 
                 do!
-                    circuit.SendRelayCell
+                    circuit.AsyncSendRelayCell
                         streamId
                         RelayData.RelayBeginDirectory
                         None
@@ -218,7 +218,7 @@ type TorStream(circuit: TorCircuit) =
                 match streamState with
                 | Connected streamId ->
                     return!
-                        circuit.SendRelayCell
+                        circuit.AsyncSendRelayCell
                             streamId
                             RelayData.RelaySendMe
                             None
@@ -439,7 +439,11 @@ type TorStream(circuit: TorCircuit) =
             let stream = new TorStream(circuit)
             do! stream.AsyncRegisterIncomingStream streamId
 
-            do! circuit.SendRelayCell streamId (RelayConnected Array.empty) None
+            do!
+                circuit.AsyncSendRelayCell
+                    streamId
+                    (RelayConnected Array.empty)
+                    None
 
             sprintf
                 "TorStream[%i,%i]: incoming stream accepted"
