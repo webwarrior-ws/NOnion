@@ -483,7 +483,7 @@ type TorServiceHost
             let secretInput =
                 Array.concat
                     [
-                        blindedPublicKey
+                        blindedPublicKey.ToByteArray()
                         HiddenServicesCipher.GetSubCredential
                             (periodNum, periodLength)
                             (masterPublicKey.GetEncoded())
@@ -529,9 +529,11 @@ type TorServiceHost
                                         ((info.AuthKey.Public
                                         :?> Ed25519PublicKeyParameters)
                                             .GetEncoded())
-                                        (descriptorSigningPublicKey.GetEncoded())
+                                        (descriptorSigningPublicKey.GetEncoded()
+                                         |> ExpandedBlindedPublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
-                                            ())
+                                            ()
+                                         |> ExpandedBlindedPrivateKey)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 let encKeyBytes =
@@ -556,9 +558,11 @@ type TorServiceHost
                                     Certificate.CreateNew
                                         CertType.IntroPointEncKeySignedByDescriptorSigningKey
                                         convertedX25519Key
-                                        (descriptorSigningPublicKey.GetEncoded())
+                                        (descriptorSigningPublicKey.GetEncoded()
+                                         |> ExpandedBlindedPublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
-                                            ())
+                                            ()
+                                         |> ExpandedBlindedPrivateKey)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 {

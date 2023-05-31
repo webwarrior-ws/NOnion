@@ -88,13 +88,13 @@ module HiddenServicesCipher =
         Ed25519Clamp blindingFactor
 
         match Ed25519.CalculateBlindedPublicKey(publicKey, blindingFactor) with
-        | true, output -> output
+        | true, output -> ExpandedBlindedPublicKey output
         | false, _ -> failwith "can't calculate blinded public key"
 
     let CalculateExpandedBlindedPrivateKey
         (blindingFactor: array<byte>)
         (masterPrivateKey: array<byte>)
-        =
+        : ExpandedBlindedPrivateKey =
         let expandedMasterPrivateKey = Array.zeroCreate 64
 
         let hashEngine = Sha512Digest()
@@ -112,14 +112,14 @@ module HiddenServicesCipher =
                     "Derive temporary signing key hash input"
                 )
             with
-        | true, output -> output
+        | true, output -> ExpandedBlindedPrivateKey output
         | false, _ -> failwith "can't calculate blinded private key"
 
 
     let BuildBlindedPublicKey
         (periodNumber: uint64, periodLength: uint64)
         (publicKey: array<byte>)
-        =
+        : ExpandedBlindedPublicKey =
         let blindingFactor =
             CalculateBlindingFactor periodNumber periodLength publicKey
 
@@ -154,7 +154,7 @@ module HiddenServicesCipher =
                 [
                     "subcredential" |> Encoding.ASCII.GetBytes
                     credential
-                    blindedKey
+                    blindedKey.ToByteArray()
                 ]
             |> SHA3256
 

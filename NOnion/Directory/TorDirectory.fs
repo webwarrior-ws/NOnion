@@ -583,7 +583,7 @@ type TorDirectory =
         |> Async.StartAsTask
 
     member self.GetResponsibleHiddenServiceDirectories
-        (blindedPublicKey: array<byte>)
+        (ExpandedBlindedPublicKey blindedPublicKey)
         (sharedRandomValue: string)
         (periodNumber: uint64)
         (periodLength: uint64)

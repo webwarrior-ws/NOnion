@@ -110,8 +110,9 @@ type TorServiceClient =
                                                 (sprintf
                                                     "/tor/hs/%i/%s"
                                                     Constants.HiddenServices.Version
-                                                    ((Convert.ToBase64String
-                                                        blindedPublicKey)))
+                                                    (Convert.ToBase64String
+                                                     <| blindedPublicKey.ToByteArray
+                                                         ()))
                                                 false
 
                                         return
@@ -188,7 +189,7 @@ type TorServiceClient =
                     let secretInput =
                         Array.concat
                             [
-                                blindedPublicKey
+                                blindedPublicKey.ToByteArray()
                                 HiddenServicesCipher.GetSubCredential
                                     (periodNum, periodLength)
                                     publicKey

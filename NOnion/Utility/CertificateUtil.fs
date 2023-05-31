@@ -70,8 +70,8 @@ type Certificate =
     static member CreateNew
         certType
         (certifiedKey: array<byte>)
-        (signingPublicKey: array<byte>)
-        (signingPrivateKey: array<byte>)
+        (ExpandedBlindedPublicKey signingPublicKey)
+        (ExpandedBlindedPrivateKey signingPrivateKey)
         (lifetime: TimeSpan)
         =
         let unsignedCertificate =
