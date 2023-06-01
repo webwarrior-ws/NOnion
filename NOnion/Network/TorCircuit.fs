@@ -26,7 +26,7 @@ type CircuitNodeDetail =
     | Create of
         EndPoint: IPEndPoint *
         NTorOnionKey: NTorOnionKey *
-        IdentityKey: array<byte>
+        IdentityKey: IdentityKey
 
     member self.GetIdentityKey() =
         match self with
@@ -694,7 +694,7 @@ and TorCircuit
                                         {
                                             LinkSpecifier.Type =
                                                 LinkSpecifierType.LegacyIdentity
-                                            Data = identityKey
+                                            Data = identityKey.ToByteArray()
                                         }
                                     ]
                                 HandshakeType = HandshakeType.NTor

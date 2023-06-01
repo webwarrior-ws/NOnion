@@ -373,7 +373,7 @@ type TorServiceClient =
                                     CircuitNodeDetail.Create(
                                         endpointSpecifier,
                                         introductionPoint.OnionKey.Value,
-                                        identityKey
+                                        IdentityKey identityKey
                                     )
 
                         return
@@ -434,7 +434,7 @@ type TorServiceClient =
                                 {
                                     LinkSpecifier.Type =
                                         LinkSpecifierType.LegacyIdentity
-                                    Data = identityKey
+                                    Data = identityKey.ToByteArray()
                                 }
                             ]
                     }
