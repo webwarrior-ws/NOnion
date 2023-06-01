@@ -30,7 +30,7 @@ type IntroductionPointInfo =
         EncryptionKey: AsymmetricCipherKeyPair
         AuthKey: AsymmetricCipherKeyPair
         MasterPublicKey: Ed25519PublicKeyParameters
-        OnionKey: NTorOnionKey
+        NTorOnionKey: NTorOnionKey
         Fingerprint: IdentityKey
     }
 
@@ -305,7 +305,7 @@ type TorServiceHost
                                     IntroductionPointInfo.Address = address
                                     AuthKey = authKeyPair
                                     EncryptionKey = encKeyPair
-                                    OnionKey = onionKey
+                                    NTorOnionKey = onionKey
                                     Fingerprint = fingerprint
                                     MasterPublicKey = masterPublicKey
                                 }
@@ -568,7 +568,7 @@ type TorServiceHost
 
                                 {
                                     IntroductionPointEntry.OnionKey =
-                                        Some info.OnionKey
+                                        Some info.NTorOnionKey
                                     AuthKey = Some authKeyCert
                                     EncKey = Some encKeyBytes
                                     EncKeyCert = Some encKeyCert
