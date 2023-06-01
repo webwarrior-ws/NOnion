@@ -70,7 +70,7 @@ type Certificate =
     static member CreateNew
         certType
         (certifiedKey: array<byte>)
-        (ExpandedBlindedPublicKey signingPublicKey)
+        (BlindedPublicKey signingPublicKey)
         (ExpandedBlindedPrivateKey signingPrivateKey)
         (lifetime: TimeSpan)
         =

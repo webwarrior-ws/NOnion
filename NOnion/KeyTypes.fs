@@ -3,12 +3,12 @@
 
 type ExpandedBlindedPrivateKey = ExpandedBlindedPrivateKey of array<byte>
 
-type ExpandedBlindedPublicKey =
-    | ExpandedBlindedPublicKey of array<byte>
+type BlindedPublicKey =
+    | BlindedPublicKey of array<byte>
 
     member self.ToByteArray() =
         match self with
-        | ExpandedBlindedPublicKey bytes -> bytes
+        | BlindedPublicKey bytes -> bytes
 
 type NTorOnionKey(bytes: array<byte>) =
     do

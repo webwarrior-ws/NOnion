@@ -531,7 +531,7 @@ type TorServiceHost
                                         :?> Ed25519PublicKeyParameters)
                                             .GetEncoded())
                                         (descriptorSigningPublicKey.GetEncoded()
-                                         |> ExpandedBlindedPublicKey)
+                                         |> BlindedPublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
                                             ()
                                          |> ExpandedBlindedPrivateKey)
@@ -560,7 +560,7 @@ type TorServiceHost
                                         CertType.IntroPointEncKeySignedByDescriptorSigningKey
                                         convertedX25519Key
                                         (descriptorSigningPublicKey.GetEncoded()
-                                         |> ExpandedBlindedPublicKey)
+                                         |> BlindedPublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
                                             ()
                                          |> ExpandedBlindedPrivateKey)
