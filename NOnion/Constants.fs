@@ -31,6 +31,9 @@ module Constants =
     [<Literal>]
     let KdfLength = 92
 
+    [<Literal>]
+    let IdentityKeyLength = 20
+
     let internal SupportedProtocolVersion: array<uint16> = [| 3us |]
 
     (*
