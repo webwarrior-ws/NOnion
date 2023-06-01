@@ -130,9 +130,11 @@ type IntroductionPointEntry =
                 "HS document (most inner wrapper) is incomplete, missing linkspecifier"
 
         match self.OnionKey with
-        | Some(NTorOnionKey onionKey) ->
+        | Some nTorOnionKey ->
             appendLine(
-                sprintf "onion-key ntor %s" (Convert.ToBase64String onionKey)
+                sprintf
+                    "onion-key ntor %s"
+                    (Convert.ToBase64String <| nTorOnionKey.ToByteArray())
             )
             |> ignore<StringBuilder>
         | None ->

@@ -22,7 +22,7 @@ type NTorHandshake =
 
     static member Create
         (identityDigest: IdentityKey)
-        (NTorOnionKey nTorOnionKey)
+        (nTorOnionKey: NTorOnionKey)
         =
 
         let privateKey, publicKey =
@@ -37,7 +37,8 @@ type NTorHandshake =
 
         {
             IdentityDigest = identityDigest
-            NTorOnionKey = X25519PublicKeyParameters(nTorOnionKey, 0)
+            NTorOnionKey =
+                X25519PublicKeyParameters(nTorOnionKey.ToByteArray(), 0)
             RandomClientPrivateKey = privateKey
             RandomClientPublicKey = publicKey
         }

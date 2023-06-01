@@ -24,7 +24,7 @@ namespace NOnion.Tests
             var nTorOnionKeyBytes = Base64Util.FromString(server.NTorOnionKey.Value);
             var endpoint = IPEndPoint.Parse($"{server.Address.Value}:{server.OnionRouterPort.Value}");
             return CircuitNodeDetail.NewCreate(endpoint, 
-                                               NTorOnionKey.NewNTorOnionKey(nTorOnionKeyBytes), 
+                                               new NTorOnionKey(nTorOnionKeyBytes), 
                                                IdentityKey.NewIdentityKey(fingerprintBytes));
         }
 

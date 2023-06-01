@@ -10,12 +10,13 @@ type ExpandedBlindedPublicKey =
         match self with
         | ExpandedBlindedPublicKey bytes -> bytes
 
-type NTorOnionKey =
-    | NTorOnionKey of array<byte>
+type NTorOnionKey(bytes: array<byte>) =
+    do
+        if bytes.Length <> Constants.NTorPublicKeyLength then
+            failwith "Invalid onion key length"
 
     member self.ToByteArray() =
-        match self with
-        | NTorOnionKey bytes -> bytes
+        bytes
 
 type IdentityKey =
     | IdentityKey of array<byte>
