@@ -531,10 +531,10 @@ type TorServiceHost
                                         :?> Ed25519PublicKeyParameters)
                                             .GetEncoded())
                                         (descriptorSigningPublicKey.GetEncoded()
-                                         |> BlindedPublicKey)
+                                         |> ED25519PublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
                                             ()
-                                         |> ExpandedBlindedPrivateKey)
+                                         |> Ed25519PrivateKey.FromBytes)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 let encKeyBytes =
@@ -560,10 +560,10 @@ type TorServiceHost
                                         CertType.IntroPointEncKeySignedByDescriptorSigningKey
                                         convertedX25519Key
                                         (descriptorSigningPublicKey.GetEncoded()
-                                         |> BlindedPublicKey)
+                                         |> ED25519PublicKey)
                                         (descriptorSigningPrivateKey.GetEncoded
                                             ()
-                                         |> ExpandedBlindedPrivateKey)
+                                         |> Ed25519PrivateKey.FromBytes)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 {
@@ -690,7 +690,7 @@ type TorServiceHost
                         CertType.ShortTermDescriptorSigningKeyByBlindedPublicKey
                         (descriptorSigningPublicKey.GetEncoded())
                         blindedPublicKey
-                        blindedPrivateKey
+                        (ExpandedEd25519 blindedPrivateKey)
                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                 HiddenServiceFirstLayerDescriptorDocument.CreateNew

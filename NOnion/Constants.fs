@@ -34,6 +34,12 @@ module Constants =
     [<Literal>]
     let IdentityKeyLength = 20
 
+    [<Literal>]
+    let Ed25519PrivateKeyLength = 32
+
+    [<Literal>]
+    let ExpandedEd25519PrivateKeyLength = 64
+
     let internal SupportedProtocolVersion: array<uint16> = [| 3us |]
 
     (*
