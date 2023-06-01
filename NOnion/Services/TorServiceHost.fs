@@ -530,11 +530,10 @@ type TorServiceHost
                                         ((info.AuthKey.Public
                                         :?> Ed25519PublicKeyParameters)
                                             .GetEncoded())
-                                        (descriptorSigningPublicKey.GetEncoded()
+                                        (descriptorSigningPublicKey
                                          |> ED25519PublicKey)
-                                        (descriptorSigningPrivateKey.GetEncoded
-                                            ()
-                                         |> Ed25519PrivateKey.FromBytes)
+                                        (descriptorSigningPrivateKey
+                                         |> Ed25519PrivateKey.Normal)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 let encKeyBytes =
@@ -559,11 +558,10 @@ type TorServiceHost
                                     Certificate.CreateNew
                                         CertType.IntroPointEncKeySignedByDescriptorSigningKey
                                         convertedX25519Key
-                                        (descriptorSigningPublicKey.GetEncoded()
+                                        (descriptorSigningPublicKey
                                          |> ED25519PublicKey)
-                                        (descriptorSigningPrivateKey.GetEncoded
-                                            ()
-                                         |> Ed25519PrivateKey.FromBytes)
+                                        (descriptorSigningPrivateKey
+                                         |> Ed25519PrivateKey.Normal)
                                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                                 {
@@ -690,7 +688,7 @@ type TorServiceHost
                         CertType.ShortTermDescriptorSigningKeyByBlindedPublicKey
                         (descriptorSigningPublicKey.GetEncoded())
                         blindedPublicKey
-                        (ExpandedEd25519 blindedPrivateKey)
+                        (Ed25519PrivateKey.Expanded blindedPrivateKey)
                         Constants.HiddenServices.Descriptor.CertificateLifetime
 
                 HiddenServiceFirstLayerDescriptorDocument.CreateNew

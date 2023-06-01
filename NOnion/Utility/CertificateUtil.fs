@@ -92,7 +92,7 @@ type Certificate =
                             CertificateExtension.Type =
                                 CertificateExtensionType.SignedWithEd25519Key
                             Flags = 0uy
-                            Data = signingPublicKey
+                            Data = signingPublicKey.GetEncoded()
                         }
                     )
                 Signature = Array.empty
@@ -102,13 +102,13 @@ type Certificate =
 
         let signature =
             match signingPrivateKey with
-            | NormalEd25519 privateKey ->
+            | Ed25519PrivateKey.Normal privateKey ->
                 //Standard private key, we can sign with bouncycastle
                 let signer = Ed25519Signer()
 
                 signer.Init(
                     true,
-                    Ed25519PrivateKeyParameters(privateKey.ToByteArray(), 0)
+                    Ed25519PrivateKeyParameters(privateKey.GetEncoded(), 0)
                 )
 
                 signer.BlockUpdate(
@@ -118,7 +118,7 @@ type Certificate =
                 )
 
                 signer.GenerateSignature()
-            | ExpandedEd25519 privateKey ->
+            | Ed25519PrivateKey.Expanded privateKey ->
                 //Expanded private key, we have to sign with Chaos.NaCl
                 let signature = Array.zeroCreate<byte> 64
 
@@ -126,7 +126,7 @@ type Certificate =
                     ArraySegment signature,
                     ArraySegment unsignedCertificateBytes,
                     ArraySegment(privateKey.ToByteArray()),
-                    ArraySegment signingPublicKey
+                    ArraySegment(signingPublicKey.GetEncoded())
                 )
 
                 signature

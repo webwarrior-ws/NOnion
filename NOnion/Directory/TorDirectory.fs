@@ -654,7 +654,7 @@ type TorDirectory =
                         Array.concat
                             [
                                 "store-at-idx" |> Encoding.ASCII.GetBytes
-                                blindedPublicKey
+                                blindedPublicKey.GetEncoded()
                                 replicaNum
                                 |> uint64
                                 |> IntegerSerialization.FromUInt64ToBigEndianByteArray

@@ -88,7 +88,7 @@ module HiddenServicesCipher =
         Ed25519Clamp blindingFactor
 
         match Ed25519.CalculateBlindedPublicKey(publicKey, blindingFactor) with
-        | true, output -> ED25519PublicKey output
+        | true, output -> ED25519PublicKey.FromBytes output
         | false, _ -> failwith "can't calculate blinded public key"
 
     let CalculateExpandedBlindedPrivateKey

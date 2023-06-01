@@ -1,16 +1,7 @@
 ﻿namespace NOnion
 
+open Org.BouncyCastle.Crypto.Parameters
 
-type NormalEd25519PrivateKey(bytes: array<byte>) =
-    do
-        if bytes.Length <> Constants.Ed25519PrivateKeyLength then
-            failwithf
-                "Invalid private key (length=%d), %d expected"
-                bytes.Length
-                Constants.Ed25519PrivateKeyLength
-
-    member self.ToByteArray() =
-        bytes
 
 type ExpandedEd25519PrivateKey(bytes: array<byte>) =
     do
@@ -23,15 +14,16 @@ type ExpandedEd25519PrivateKey(bytes: array<byte>) =
     member self.ToByteArray() =
         bytes
 
+[<RequireQualifiedAccess>]
 type Ed25519PrivateKey =
-    | NormalEd25519 of NormalEd25519PrivateKey
-    | ExpandedEd25519 of ExpandedEd25519PrivateKey
+    | Normal of Ed25519PrivateKeyParameters
+    | Expanded of ExpandedEd25519PrivateKey
 
     static member FromBytes(bytes: array<byte>) : Ed25519PrivateKey =
         if bytes.Length = Constants.ExpandedEd25519PrivateKeyLength then
-            ExpandedEd25519 <| ExpandedEd25519PrivateKey bytes
+            Expanded <| ExpandedEd25519PrivateKey bytes
         elif bytes.Length = Constants.Ed25519PrivateKeyLength then
-            NormalEd25519 <| NormalEd25519PrivateKey bytes
+            Normal <| Ed25519PrivateKeyParameters(bytes, 0)
         else
             failwithf
                 "Invalid private key (length=%d), private key should either be %d (standard ed25519) or %d bytes (expanded ed25519 key)"
@@ -41,15 +33,18 @@ type Ed25519PrivateKey =
 
     member self.ToByteArray() =
         match self with
-        | NormalEd25519 key -> key.ToByteArray()
-        | ExpandedEd25519 key -> key.ToByteArray()
+        | Normal key -> key.GetEncoded()
+        | Expanded key -> key.ToByteArray()
 
 type ED25519PublicKey =
-    | ED25519PublicKey of array<byte>
+    | ED25519PublicKey of Ed25519PublicKeyParameters
+
+    static member FromBytes(bytes: array<byte>) : ED25519PublicKey =
+        ED25519PublicKey <| Ed25519PublicKeyParameters(bytes, 0)
 
     member self.ToByteArray() =
         match self with
-        | ED25519PublicKey bytes -> bytes
+        | ED25519PublicKey publicKeyParams -> publicKeyParams.GetEncoded()
 
 type NTorOnionKey(bytes: array<byte>) =
     do
