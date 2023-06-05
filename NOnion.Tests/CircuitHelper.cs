@@ -25,7 +25,7 @@ namespace NOnion.Tests
             var endpoint = IPEndPoint.Parse($"{server.Address.Value}:{server.OnionRouterPort.Value}");
             return CircuitNodeDetail.NewCreate(endpoint, 
                                                new NTorOnionKey(nTorOnionKeyBytes), 
-                                               new IdentityKey(fingerprintBytes));
+                                               new Fingerprint(fingerprintBytes));
         }
 
         /* It's possible that the router returned by GetRandomFallbackDirectory

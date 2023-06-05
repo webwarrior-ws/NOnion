@@ -32,7 +32,7 @@ module Constants =
     let KdfLength = 92
 
     [<Literal>]
-    let IdentityKeyLength = 20
+    let FingerprintLength = 20
 
     [<Literal>]
     let Ed25519PrivateKeyLength = 32

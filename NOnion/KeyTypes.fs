@@ -57,12 +57,13 @@ type NTorOnionKey(bytes: array<byte>) =
     member self.ToByteArray() =
         bytes
 
-type IdentityKey(bytes: array<byte>) =
+/// Digest of identity key.
+type Fingerprint(bytes: array<byte>) =
     do
-        if bytes.Length <> Constants.IdentityKeyLength then
+        if bytes.Length <> Constants.FingerprintLength then
             failwithf
-                "Invalid identity key length, expected %d, got %d"
-                Constants.IdentityKeyLength
+                "Invalid fingerprint (identity key digest) length, expected %d, got %d"
+                Constants.FingerprintLength
                 bytes.Length
 
     member self.ToByteArray() =

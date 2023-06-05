@@ -31,7 +31,7 @@ type IntroductionPointInfo =
         AuthKey: AsymmetricCipherKeyPair
         MasterPublicKey: Ed25519PublicKeyParameters
         NTorOnionKey: NTorOnionKey
-        Fingerprint: IdentityKey
+        Fingerprint: Fingerprint
     }
 
 type TorServiceHost
@@ -234,7 +234,7 @@ type TorServiceHost
                     |> Seq.tryExactlyOne
 
                 match linkSpecifierOpt with
-                | Some linkSpecifier -> IdentityKey linkSpecifier.Data
+                | Some linkSpecifier -> Fingerprint linkSpecifier.Data
                 | None -> failwith "No rendezvous fingerprint found!"
 
             let connectToRendezvousJob =

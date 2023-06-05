@@ -15,13 +15,13 @@ type NTorHandshake =
         {
             RandomClientPrivateKey: X25519PrivateKeyParameters
             RandomClientPublicKey: X25519PublicKeyParameters
-            IdentityDigest: IdentityKey
+            IdentityDigest: Fingerprint
             NTorOnionKey: X25519PublicKeyParameters
         }
 
 
     static member Create
-        (identityDigest: IdentityKey)
+        (identityDigest: Fingerprint)
         (nTorOnionKey: NTorOnionKey)
         =
 

@@ -49,7 +49,7 @@ type TorGuard
     (
         client: TcpClient,
         sslStream: SslStream,
-        fingerprintOpt: Option<IdentityKey>
+        fingerprintOpt: Option<Fingerprint>
     ) =
     let shutdownToken = new CancellationTokenSource()
 
@@ -116,7 +116,7 @@ type TorGuard
 
     static member private InnerNewClient
         (ipEndpoint: IPEndPoint)
-        (fingerprintOpt: Option<IdentityKey>)
+        (fingerprintOpt: Option<Fingerprint>)
         =
         async {
             let tcpClient = new TcpClient()

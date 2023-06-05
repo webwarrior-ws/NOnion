@@ -26,7 +26,7 @@ type CircuitNodeDetail =
     | Create of
         EndPoint: IPEndPoint *
         NTorOnionKey: NTorOnionKey *
-        IdentityKey: IdentityKey
+        Fingerprint: Fingerprint
 
     member self.GetIdentityKey() =
         match self with

@@ -373,7 +373,7 @@ type TorServiceClient =
                                     CircuitNodeDetail.Create(
                                         endpointSpecifier,
                                         introductionPoint.OnionKey.Value,
-                                        IdentityKey identityKey
+                                        Fingerprint identityKey
                                     )
 
                         return
